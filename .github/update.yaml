@@ -1,0 +1,89 @@
+name: Page Builder by ALMO
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+            fetch-depth: 0
+
+      - name: Check for Changes in MD Files
+        id: check_changes
+        run: |
+          changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.md$' || true)
+          changed_files="${changed_files//'%'/'%25'}"
+          changed_files="${changed_files//$'\n'/'%0A'}"
+          changed_files="${changed_files//$'\r'/'%0D'}"
+          echo "changed_files=$changed_files" >> $GITHUB_OUTPUT
+          if [[ -z "$changed_files" ]]; then
+            echo "No changes in MD files. Skipping build."
+          else
+            echo "Change: $changed_files"
+          fi
+      
+      - name: Clone ALMO
+        if: steps.check_changes.outputs.changed_files != ''
+        run: git clone https://github.com/abap34/ALMO
+
+      - name: Install g++ 
+        if: steps.check_changes.outputs.changed_files != ''
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ 
+
+      - name: Compile almo.cpp
+        if: steps.check_changes.outputs.changed_files != ''
+        run: |
+          cd ALMO/src
+          g++ -std=c++20 -o almo almo.cpp
+
+      - name: Generate HTML Files
+        if: steps.check_changes.outputs.changed_files != ''
+        run: |
+          cd ${{ github.workspace }}
+          cd posts
+          changed_files=${{ steps.check_changes.outputs.changed_files }}
+          changed_files="${changed_files//'%25'/'%'}"
+          changed_files="${changed_files//'%0A'/$'\n'}"
+          changed_files="${changed_files//'%0D'/$'\r'}"
+          echo "changed_files=$changed_files" 
+          for file in $changed_files; do
+            filename_without_extension=$(basename $file .md)
+            file=${file#posts/}
+            echo "Generating HTML for $file"
+            ../ALMO/src/almo "$file" -o ${filename_without_extension}.html -d > tmp.json 
+            python3 ../blog_builder/build.py 
+          done
+          rm tmp.json
+
+      - name: Copy file for public/posts
+        if: steps.check_changes.outputs.changed_files != ''
+        run: |
+          cd ${{ github.workspace }}
+          cd posts
+          cp -r . ../public/posts/
+
+      - name: Commit and Push HTML Files
+        if: steps.check_changes.outputs.changed_files != ''
+        run: |
+          cd ${{ github.workspace }}
+          git config --global user.email "actions@example.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git ls-remote --exit-code origin almo-build || git push origin HEAD:refs/heads/almo-build
+          git commit -m "Add generated HTML files"
+
+      - name: Push changes
+        if: steps.check_changes.outputs.changed_files != ''
+        uses: ad-m/github-push-action@master
+        with:
+          branch: almo-build
+          github_token: ${{ secrets.GITHUB_TOKEN }}
