@@ -42,8 +42,7 @@ jobs:
       - name: Compile almo.cpp
         if: steps.check_changes.outputs.changed_files != ''
         run: |
-          cd ALMO/src
-          g++ -std=c++20 -o almo almo.cpp
+          sh build.sh
 
       - name: Generate HTML Files
         if: steps.check_changes.outputs.changed_files != ''
@@ -59,7 +58,7 @@ jobs:
             filename_without_extension=$(basename $file .md)
             file=${file#posts/}
             echo "Generating HTML for $file"
-            ../ALMO/src/almo "$file" -o ${filename_without_extension}.html -d > tmp.json 
+            ../ALMO/almo "$file" -o ${filename_without_extension}.html -d > tmp.json 
             python3 ../blog_builder/build.py 
           done
           rm tmp.json
