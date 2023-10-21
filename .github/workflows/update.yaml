@@ -42,6 +42,7 @@ jobs:
       - name: Compile almo.cpp
         if: steps.check_changes.outputs.changed_files != ''
         run: |
+          cd ALMO
           sh build.sh
 
       - name: Generate HTML Files
