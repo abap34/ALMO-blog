@@ -29,9 +29,10 @@ jobs:
             echo "Change: $changed_files"
           fi
       
-      - name: Clone ALMO
+      - name: Add ALMO 
         if: steps.check_changes.outputs.changed_files != ''
-        run: git clone https://github.com/abap34/ALMO
+        run: git submodule add  https://github.com/abap34/ALMO.git
+  
 
       - name: Install g++ 
         if: steps.check_changes.outputs.changed_files != ''
