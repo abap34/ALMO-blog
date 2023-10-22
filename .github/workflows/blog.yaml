@@ -82,6 +82,7 @@ jobs:
           cd ${{ github.workspace }}
           git add .
           git ls-remote --exit-code origin almo-build || git push origin HEAD:refs/heads/almo-build
+          git pull origin almo-build
           git commit -m "Add generated HTML files"
 
       - name: Push changes
