@@ -65,13 +65,6 @@ jobs:
           done
           rm tmp.json
 
-      - name: Copy file for public/posts
-        if: steps.check_changes.outputs.changed_files != ''
-        run: |
-          cd ${{ github.workspace }}
-          cd posts
-          cp -r . ../public/posts/
-
       - name: Commit and Push HTML Files
         if: steps.check_changes.outputs.changed_files != ''
         run: |

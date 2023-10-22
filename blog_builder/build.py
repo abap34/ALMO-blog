@@ -62,8 +62,8 @@ def build_article(config):
 
     with open('../public/posts.html', 'r') as f:
         html = f.read()
-        html = html.replace('\\{\\{blog_name\\}\\}', config["blog_name"])
     
+    html = html.replace('\\{\\{blog_name\\}\\}', config["blog_name"])
     with open('../public/posts.html', 'w') as f:
         f.write(html)
 
