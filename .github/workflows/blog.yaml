@@ -78,6 +78,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           git add .
+          git config pull.rebase false
           git pull origin almo-build
           git commit -m "Add generated HTML files"
 
