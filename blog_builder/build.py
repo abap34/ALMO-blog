@@ -60,7 +60,7 @@ def build_article(config):
     with open('../public/recent_posts.json', 'w') as f:
         json.dump(recent_posts, f)
 
-    with open('../public/posts.html', 'r') as f:
+    with open('../posts.html', 'r') as f:
         html = f.read()
     
     html = html.replace('\\{\\{blog_name\\}\\}', config["blog_name"])
