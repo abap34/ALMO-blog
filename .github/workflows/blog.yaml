@@ -15,8 +15,6 @@ jobs:
         with:
             fetch-depth: 0
 
-    
-
       - name: Check for Changes in MD Files
         id: check_changes
         run: |
@@ -38,7 +36,6 @@ jobs:
             cd ${{ github.workspace }}
             git config --global user.email "actions@example.com"
             git config --global user.name "GitHub Actions"
-            git fetch --all
 
       - name: Add ALMO 
         if: steps.check_changes.outputs.changed_files != ''
@@ -76,12 +73,11 @@ jobs:
           done
           rm tmp.json
 
-      - name: Commit and Push HTML Files
+      - name: Commit HTML Files
         if: steps.check_changes.outputs.changed_files != ''
         run: |
           cd ${{ github.workspace }}
           git add .
-          git ls-remote --exit-code origin almo-build || git push origin HEAD:refs/heads/almo-build
           git pull origin almo-build
           git commit -m "Add generated HTML files"
 
