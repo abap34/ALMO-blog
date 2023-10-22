@@ -38,9 +38,8 @@ jobs:
             cd ${{ github.workspace }}
             git config --global user.email "actions@example.com"
             git config --global user.name "GitHub Actions"
-            git checkout -b almo-build
-            git pull origin almo-build
-      
+            git fetch --all
+
       - name: Add ALMO 
         if: steps.check_changes.outputs.changed_files != ''
         run: git submodule add  https://github.com/abap34/ALMO.git
