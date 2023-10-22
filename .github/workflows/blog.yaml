@@ -38,11 +38,6 @@ jobs:
             git config --global user.name "GitHub Actions"
 
 
-      - name: Add ALMO 
-        if: steps.check_changes.outputs.changed_files != ''
-        run: git submodule add  https://github.com/abap34/ALMO.git
-  
-
       - name: Install g++ 
         if: steps.check_changes.outputs.changed_files != ''
         run: |
