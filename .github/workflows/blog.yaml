@@ -37,6 +37,7 @@ jobs:
             git config --global user.email "actions@example.com"
             git config --global user.name "GitHub Actions"
 
+
       - name: Add ALMO 
         if: steps.check_changes.outputs.changed_files != ''
         run: git submodule add  https://github.com/abap34/ALMO.git
@@ -79,12 +80,10 @@ jobs:
           cd ${{ github.workspace }}
           git add .
           git config pull.rebase false
-          git pull origin almo-build
           git commit -m "Add generated HTML files"
 
       - name: Push changes
         if: steps.check_changes.outputs.changed_files != ''
         uses: ad-m/github-push-action@master
         with:
-          branch: almo-build
           github_token: ${{ secrets.GITHUB_TOKEN }}
