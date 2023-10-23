@@ -24,10 +24,9 @@ def build_article(config):
     with open(html_path, 'w') as f:
         f.write(html)
 
-    url = config["root_url"]  + '/posts/' + html_path.replace('../public/posts/', '')
+    url = config["root_url"]  + '/posts/' + html_path.replace('posts/', '')
 
-
-    with open('../public/posts.json', 'r') as f:
+    with open('posts.json', 'r') as f:
         posts = json.load(f)
         for post in posts:
             if post['title'] == title:
@@ -52,24 +51,24 @@ def build_article(config):
         
     posts = sorted(posts, key=lambda x: time.strptime(x['post_date'], '%Y/%m/%d'), reverse=True)
 
-    with open('../public/posts.json', 'w') as f:
+    with open('posts.json', 'w') as f:
         json.dump(posts, f)
 
 
     recent_posts = posts[:5]
-    with open('../public/recent_posts.json', 'w') as f:
+    with open('recent_posts.json', 'w') as f:
         json.dump(recent_posts, f)
 
-    with open('../posts.html', 'r') as f:
+    with open('posts.html', 'r') as f:
         html = f.read()
     
-    html = html.replace('\\{\\{blog_name\\}\\}', config["blog_name"])
-    with open('../posts.html', 'w') as f:
+    html = html.replace('{{blog_name}}', config["blog_name"])
+    print(html)
+    with open('posts.html', 'w') as f:
         f.write(html)
 
 
-    
 
 if __name__ == '__main__':
-    config = json.load(open('../config/config.json', 'r'))
+    config = json.load(open('config/config.json', 'r'))
     build_article(config)

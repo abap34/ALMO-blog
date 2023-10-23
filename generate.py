@@ -34,13 +34,13 @@ twitter_site: @{twitter_id}
 ---
 """.format_map(config)
 
-    if os.path.exists('posts/' + filename):
+    if os.path.exists('posts-md/' + filename):
         raise FileAlreadyExistsError("記事のファイル名が重複しています")
     
     
-    os.makedirs('posts/' + basename, exist_ok=True)
+    os.makedirs('posts-md/' + basename, exist_ok=True)
 
-    with open('posts/' + filename, 'w') as f:
+    with open('posts-md/' + filename, 'w') as f:
         f.write(head)
 
     print("記事テンプレートが作成されました: {}".format(filename))

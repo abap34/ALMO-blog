@@ -59,7 +59,6 @@ jobs:
         if: steps.check_changes.outputs.changed_files != ''
         run: |
           cd ${{ github.workspace }}
-          cd posts
           changed_files=${{ steps.check_changes.outputs.changed_files }}
           changed_files="${changed_files//'%25'/'%'}"
           changed_files="${changed_files//'%0A'/$'\n'}"
@@ -67,10 +66,10 @@ jobs:
           echo "changed_files=$changed_files" 
           for file in $changed_files; do
             filename_without_extension=$(basename $file .md)
-            file=${file#posts/}
+            filename_without_extension=${filename_without_extension#posts-md/}
             echo "Generating HTML for $file"
-            ../ALMO/almo "$file" -o ${filename_without_extension}.html -d > tmp.json 
-            python3 ../blog_builder/build.py 
+            ALMO/almo "$file" -o posts/${filename_without_extension}.html -d > tmp.json 
+            python3 blog_builder/build.py 
           done
           rm tmp.json
 
