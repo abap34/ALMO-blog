@@ -1,8 +1,13 @@
 import json
 import time
+import os
+import sys
 
 
-def build_article(config):
+def build_article(config, args):
+    cmd = 'ALMO/almo {} -o {} -d > tmp.json 2>> build.log'.format(args[1], args[2])
+    os.system(cmd)
+    
     # read tmp.json
     with open('tmp.json', 'r') as f:
         tmp = json.load(f)
@@ -69,4 +74,4 @@ def build_article(config):
 
 if __name__ == '__main__':
     config = json.load(open('config/config.json', 'r'))
-    build_article(config)
+    build_article(config, sys.argv)

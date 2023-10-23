@@ -71,8 +71,7 @@ jobs:
             filename_without_extension=$(basename $file .md)
             filename_without_extension=${filename_without_extension#posts-md/}
             echo "Generating HTML for $file"
-            ALMO/almo "$file" -o posts/${filename_without_extension}.html -d > tmp.json 
-            python3 blog_builder/build.py 
+            python3 blog_builder/build.py $file posts/${filename_without_extension}.html
           done
           rm tmp.json
 
