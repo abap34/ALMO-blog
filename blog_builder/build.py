@@ -2,7 +2,6 @@ import json
 import time
 
 
-
 def build_article(config):
     # read tmp.json
     with open('tmp.json', 'r') as f:
