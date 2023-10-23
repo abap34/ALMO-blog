@@ -65,6 +65,9 @@ jobs:
           changed_files="${changed_files//'%0D'/$'\r'}"
           echo "changed_files=$changed_files" 
           for file in $changed_files; do
+            if [ ! -e $file ]; then
+              continue
+            fi
             filename_without_extension=$(basename $file .md)
             filename_without_extension=${filename_without_extension#posts-md/}
             echo "Generating HTML for $file"

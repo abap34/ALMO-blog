@@ -63,7 +63,6 @@ def build_article(config):
         html = f.read()
     
     html = html.replace('{{blog_name}}', config["blog_name"])
-    print(html)
     with open('posts.html', 'w') as f:
         f.write(html)
 
