@@ -29,7 +29,6 @@ jobs:
             echo "Change: $changed_files"
           fi
 
-
       - name: Setup Git
         if: steps.check_changes.outputs.changed_files != ''
         run: |
@@ -38,6 +37,12 @@ jobs:
             git config --global user.name "GitHub Actions"
 
 
+      - name: Setup ALMO
+        if: steps.check_changes.outputs.changed_files != ''
+        run: |
+            git submodule update --init --recursive
+
+            
       - name: Install g++ 
         if: steps.check_changes.outputs.changed_files != ''
         run: |
