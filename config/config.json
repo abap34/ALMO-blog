@@ -1,5 +1,6 @@
 {
-  "root_url": "https://abap34.github.io",
+  // ページのルートパス。　GitHub Pagesの場合は https://{username}.github.io/{repository_name} になる
+  "root_url": "https://abap34.github.io/ALMO-blog",
   "blog_name": "abap34's blog",
   "author": "abap34",
   "mail": "abap0002@gmail.com",

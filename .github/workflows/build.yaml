@@ -70,11 +70,13 @@ jobs:
             fi
             filename_without_extension=$(basename $file .md)
             filename_without_extension=${filename_without_extension#posts-md/}
+            out_path="public/posts/${filename_without_extension}.html"
             echo "Generating HTML for $file"
-            python3 blog_builder/build.py $file posts/${filename_without_extension}.html
+            python3 blog_builder/build.py $file $out_path
           done
           rm tmp.json
 
+    
       - name: Commit HTML Files
         if: steps.check_changes.outputs.changed_files != ''
         run: |
@@ -88,3 +90,14 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ github.workspace }}/public
+          publish_branch: main
