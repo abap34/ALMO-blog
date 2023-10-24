@@ -22,14 +22,13 @@ def build_article(config, args):
     
 
     with open(html_path, 'r') as f:
-        # insert back_to_home in <div class='links'>
         html = f.read()
         html = html.replace('<div class="links">', '<div class="links">' + back_to_home)
     
     with open(html_path, 'w') as f:
         f.write(html)
 
-    url = config["root_url"]  + '/posts/' + html_path.replace('posts/', '')
+    url = config["root_url"]  + '/posts/' + html_path.replace('public/', '')
 
     with open('public/posts.json', 'r') as f:
         posts = json.load(f)
