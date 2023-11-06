@@ -40,7 +40,9 @@ jobs:
         if: steps.check_changes.outputs.changed_files != ''
         run: |
             git switch -C gh-pages
-            git pull origin gh-pages
+            if git ls-remote --heads origin gh-pages | grep -q 'gh-pages'; then
+              git pull origin gh-pages
+            fi
 
       - name: Setup ALMO
         if: steps.check_changes.outputs.changed_files != ''
