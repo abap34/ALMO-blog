@@ -35,8 +35,13 @@ jobs:
             cd ${{ github.workspace }}
             git config --global user.email "actions@example.com"
             git config --global user.name "GitHub Actions"
-            git switch -C gh-pages
 
+      - name: Setup gh-pages branch
+        if: steps.check_changes.outputs.changed_files != ''
+        run: |
+            git switch -C gh-pages
+            git rm -rf .
+            git pull origin gh-pages
 
       - name: Setup ALMO
         if: steps.check_changes.outputs.changed_files != ''
