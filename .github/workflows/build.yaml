@@ -35,13 +35,7 @@ jobs:
             cd ${{ github.workspace }}
             git config --global user.email "actions@example.com"
             git config --global user.name "GitHub Actions"
-            if ! git show-ref --verify --quiet refs/heads/gh-pages; then
-              git checkout --orphan gh-pages
-              git rm -rf .
-              git commit --allow-empty -m "Init"
-              git push origin gh-pages
-            fi
-            git checkout gh-pages
+            git switch -C gh-pages
 
 
       - name: Setup ALMO
